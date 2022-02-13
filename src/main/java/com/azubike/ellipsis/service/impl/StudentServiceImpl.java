@@ -49,4 +49,32 @@ public class StudentServiceImpl implements StudentService {
 
 	}
 
+	@Override
+	public void deleteStudent(long id) {
+		Student foundStudent = repository.findById(id)
+				.orElseThrow(() -> new StudentServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages(),
+						HttpStatus.BAD_REQUEST.value()));
+		repository.delete(foundStudent);
+	}
+
+	@Override
+	public List<Student> findByFirstName(String name) {
+		List<Student> students = repository.findStudentByFirstName(name);
+		return students;
+	}
+
+	@Override
+	public Student findByFirstNameAndLastName(String firstName, String lastName) {
+		Student foundStudent = repository.findByFirstNameAndLastName(firstName, lastName);
+		if (foundStudent == null)
+			throw new StudentServiceException(ErrorMessages.NAME_NOT_FOUND.getErrorMessages(),
+					HttpStatus.NOT_FOUND.value());
+		return foundStudent;
+	}
+
+	@Override
+	public List<Student> findByFirstNameOrLastName(String firstName, String lastName) {
+		return repository.findByFirstNameOrLastName(firstName, lastName);
+	}
+
 }

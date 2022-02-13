@@ -6,7 +6,7 @@ public enum ErrorMessages {
 	NO_RECORD_FOUND("No record with provided Id found"), AUTHENTICATION_FAILED("Authentication Failed"),
 	COULD_NOT_UPDATE_RECORD("Could not update record"), COULD_NOT_DELETE_RECORD("Could not delete record"),
 	COULD_NOT_CREATE_RECORD("Could not create record"), EMAIL_ADDRESS_NOT_VERIFIED("Email address not verified"),
-	COULD_NOT_SEND_EMAIL("Could not send email");
+	COULD_NOT_SEND_EMAIL("Could not send email"), NAME_NOT_FOUND("Name not found in database");
 
 	private String errorMessages;
 
