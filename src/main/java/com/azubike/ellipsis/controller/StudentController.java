@@ -39,9 +39,10 @@ public class StudentController {
 	private StudentService studentService;
 
 	@GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<StudentResponse>> getStudents() {
+	public ResponseEntity<List<StudentResponse>> getStudents(@RequestParam(name = "page", defaultValue = "1") int page,
+			@RequestParam(name = "size", defaultValue = "10") int size) {
 		List<StudentResponse> returnedValue = new ArrayList<>();
-		List<Student> students = studentService.getAllStudents();
+		List<Student> students = studentService.getAllStudents(page, size);
 		if (students != null && !students.isEmpty()) {
 			Type listType = new TypeToken<List<StudentResponse>>() {
 			}.getType();

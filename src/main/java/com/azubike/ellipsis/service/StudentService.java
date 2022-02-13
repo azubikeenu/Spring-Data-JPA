@@ -6,7 +6,7 @@ import com.azubike.ellipsis.entity.Student;
 import com.azubike.ellipsis.request.StudentRequest;
 
 public interface StudentService {
-	List<Student> getAllStudents();
+	List<Student> getAllStudents(int page, int size);
 
 	Student createStudent(StudentRequest student);
 
