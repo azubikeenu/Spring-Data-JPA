@@ -5,14 +5,17 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.azubike.ellipsis.entity.Student;
 import com.azubike.ellipsis.exceptions.StudentServiceException;
 import com.azubike.ellipsis.repository.StudentRepository;
+import com.azubike.ellipsis.request.InQueryRequest;
 import com.azubike.ellipsis.request.StudentRequest;
 import com.azubike.ellipsis.response.ErrorMessages;
 import com.azubike.ellipsis.service.StudentService;
@@ -24,8 +27,9 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<Student> getAllStudents(int page, int size) {
-		Pageable pageable = PageRequest.of(page - 1, size);
-		return repository.findAll(pageable).getContent();
+		Pageable pageable = PageRequest.of(page - 1, size, Sort.by("id").descending());
+		Page<Student> pages = repository.findAll(pageable);
+		return pages.getContent();
 	}
 
 	@Override
@@ -78,6 +82,12 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public List<Student> findByFirstNameOrLastName(String firstName, String lastName) {
 		return repository.findByFirstNameOrLastName(firstName, lastName);
+	}
+
+	@Override
+	public List<Student> findByFirstNameIn(InQueryRequest firstNames) {
+		List<Student> students = repository.findByFirstNameIn(firstNames.getFirstNames());
+		return students;
 	}
 
 }

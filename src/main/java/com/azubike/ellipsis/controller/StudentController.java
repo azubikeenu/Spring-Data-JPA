@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.azubike.ellipsis.entity.Student;
+import com.azubike.ellipsis.request.InQueryRequest;
 import com.azubike.ellipsis.request.StudentRequest;
 import com.azubike.ellipsis.response.OperationStatusModel;
 import com.azubike.ellipsis.response.RequestOperationName;
@@ -43,11 +44,7 @@ public class StudentController {
 			@RequestParam(name = "size", defaultValue = "10") int size) {
 		List<StudentResponse> returnedValue = new ArrayList<>();
 		List<Student> students = studentService.getAllStudents(page, size);
-		if (students != null && !students.isEmpty()) {
-			Type listType = new TypeToken<List<StudentResponse>>() {
-			}.getType();
-			returnedValue = new ModelMapper().map(students, listType);
-		}
+		returnedValue = mapStudents(returnedValue, students);
 		return ResponseEntity.ok().body(returnedValue);
 
 	}
@@ -83,11 +80,7 @@ public class StudentController {
 			@RequestParam(name = "name", required = true) String name) {
 		List<StudentResponse> returnedValue = new ArrayList<>();
 		List<Student> students = studentService.findByFirstName(name);
-		if (students != null && !students.isEmpty()) {
-			Type listType = new TypeToken<List<StudentResponse>>() {
-			}.getType();
-			returnedValue = new ModelMapper().map(students, listType);
-		}
+		returnedValue = mapStudents(returnedValue, students);
 		return ResponseEntity.ok().body(returnedValue);
 	}
 
@@ -106,13 +99,27 @@ public class StudentController {
 			@RequestParam(name = "lastName") String lastName) {
 		List<StudentResponse> returnedValue = new ArrayList<>();
 		List<Student> students = studentService.findByFirstNameOrLastName(firstName, lastName);
+		returnedValue = mapStudents(returnedValue, students);
+		return ResponseEntity.ok().body(returnedValue);
+
+	}
+
+	@GetMapping(value = "/find_by_first_name_in", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<StudentResponse>> findByFirstNameIn(@Valid @RequestBody InQueryRequest firstNames) {
+		List<StudentResponse> returnedValue = new ArrayList<>();
+		List<Student> students = studentService.findByFirstNameIn(firstNames);
+		returnedValue = mapStudents(returnedValue, students);
+		return ResponseEntity.ok().body(returnedValue);
+
+	}
+
+	private List<StudentResponse> mapStudents(List<StudentResponse> returnedValue, List<Student> students) {
 		if (students != null && !students.isEmpty()) {
 			Type listType = new TypeToken<List<StudentResponse>>() {
 			}.getType();
 			returnedValue = new ModelMapper().map(students, listType);
 		}
-		return ResponseEntity.ok().body(returnedValue);
-
+		return returnedValue;
 	}
 
 }

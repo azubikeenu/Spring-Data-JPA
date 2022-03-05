@@ -20,4 +20,10 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
 	List<Student> findByFirstNameOrLastName(String firstName, String lastName);
 
+//---------Using Native Queries for IN QUERIES  --------------//
+//	@Query(value = "select * from Student s where s.first_name in :inFirstName", nativeQuery = true)
+//	List<Student> findByFirstNameIn(@Param("inFirstName") List<String> inFirstName);
+
+	List<Student> findByFirstNameIn(List<String> firstNames);
+
 }
