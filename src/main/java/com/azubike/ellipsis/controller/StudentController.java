@@ -24,8 +24,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.azubike.ellipsis.entity.Student;
+import com.azubike.ellipsis.exceptions.StudentServiceException;
 import com.azubike.ellipsis.request.InQueryRequest;
 import com.azubike.ellipsis.request.StudentRequest;
+import com.azubike.ellipsis.request.StudentsRequest;
+import com.azubike.ellipsis.response.ErrorMessages;
 import com.azubike.ellipsis.response.OperationStatusModel;
 import com.azubike.ellipsis.response.RequestOperationName;
 import com.azubike.ellipsis.response.RequestOperationStatus;
@@ -110,6 +113,34 @@ public class StudentController {
 		List<Student> students = studentService.findByFirstNameIn(firstNames);
 		returnedValue = mapStudents(returnedValue, students);
 		return ResponseEntity.ok().body(returnedValue);
+
+	}
+
+	@PutMapping(value = "/update_student_first_name/{id}/{firstName}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<StudentResponse> updateStudentFirstName(@PathVariable(name = "id", required = true) long id,
+			@PathVariable(required = true) String firstName) {
+		Student updatedStudent = studentService.updateStudentFirstName(id, firstName)
+				.orElseThrow(() -> new StudentServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages(),
+						HttpStatus.NOT_FOUND.value()));
+
+		StudentResponse returnedValue = new ModelMapper().map(updatedStudent, StudentResponse.class);
+		return ResponseEntity.ok(returnedValue);
+	}
+
+	@PostMapping(value = "/save_students", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<StudentResponse>> saveMultipleStudents(
+			@RequestBody(required = true) StudentsRequest students) {
+		List<Student> savedStudent = studentService.saveAllStudents(students.getStudents());
+		List<StudentResponse> returnedValue = mapStudents(new ArrayList<StudentResponse>(), savedStudent);
+		return ResponseEntity.ok(returnedValue);
+
+	}
+
+	@GetMapping(value = "/find_by_city/{city}", produces = MediaType.APPLICATION_JSON_VALUE)
+	ResponseEntity<List<StudentResponse>> findStudentsByCity(@PathVariable String city) {
+		List<Student> students = studentService.findByCity(city);
+		List<StudentResponse> returnedValue = mapStudents(new ArrayList<StudentResponse>(), students);
+		return ResponseEntity.ok(returnedValue);
 
 	}
 

@@ -3,9 +3,11 @@ package com.azubike.ellipsis.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.azubike.ellipsis.entity.Student;
 
@@ -26,4 +28,16 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
 	List<Student> findByFirstNameIn(List<String> firstNames);
 
+	/// --------------JPQL---------------------------///
+	@Query("from Student WHERE firstName = :firstName AND lastName = :lastName")
+	Student findByFirstNameAndLastNameJ(String firstName, String lastName);
+
+	@Transactional
+	@Modifying
+	@Query(value = "update Student s set s.firstName = :firstName WHERE s.id = :id")
+	int updateStudentFirstName(String firstName, long id);
+
+	/// ---------------Relationships--------------------///////////
+
+	List<Student> findByAddressCity(String city);
 }

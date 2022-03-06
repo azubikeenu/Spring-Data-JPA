@@ -17,5 +17,7 @@ public class StudentRequest {
 	private String lastName;
 	@Email
 	private String email;
+	private String street;
+	private String city;
 
 }
