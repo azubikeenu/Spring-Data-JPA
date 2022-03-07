@@ -1,4 +1,4 @@
-package com.azubike.ellipsis.request;
+package com.azubike.ellipsis.model.request;
 
 import java.util.List;
 

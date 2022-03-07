@@ -1,4 +1,4 @@
-package com.azubike.ellipsis.response;
+package com.azubike.ellipsis.model.response;
 
 public enum ErrorMessages {
 	MISSING_REQUIRED_FIELD("Missing Required Field,Please check documentation for required fields"),

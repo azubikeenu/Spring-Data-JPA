@@ -9,12 +9,18 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import com.azubike.ellipsis.response.ErrorMessage;
+import com.azubike.ellipsis.model.response.ErrorMessage;
 
 @ControllerAdvice
 public class AppExceptionHandler {
 	@ExceptionHandler(value = { StudentServiceException.class })
 	public ResponseEntity<Object> handleStudentServiceException(StudentServiceException ex, WebRequest req) {
+		ErrorMessage errorMessage = new ErrorMessage(new Date(), ex.getMessage(), ex.getStatusCode());
+		return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(value = { AddressServiceException.class })
+	public ResponseEntity<Object> handleAddressServiceException(AddressServiceException ex, WebRequest req) {
 		ErrorMessage errorMessage = new ErrorMessage(new Date(), ex.getMessage(), ex.getStatusCode());
 		return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.BAD_REQUEST);
 	}

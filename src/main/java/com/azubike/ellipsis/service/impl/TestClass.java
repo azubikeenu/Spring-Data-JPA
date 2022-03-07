@@ -3,7 +3,7 @@ package com.azubike.ellipsis.service.impl;
 import org.modelmapper.ModelMapper;
 
 import com.azubike.ellipsis.entity.Student;
-import com.azubike.ellipsis.request.StudentRequest;
+import com.azubike.ellipsis.model.request.StudentRequest;
 
 public class TestClass {
 

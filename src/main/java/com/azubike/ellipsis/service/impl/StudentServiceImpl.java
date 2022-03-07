@@ -4,6 +4,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
@@ -18,20 +19,18 @@ import org.springframework.stereotype.Service;
 
 import com.azubike.ellipsis.entity.Address;
 import com.azubike.ellipsis.entity.Student;
+import com.azubike.ellipsis.entity.Subject;
 import com.azubike.ellipsis.exceptions.StudentServiceException;
-import com.azubike.ellipsis.repository.AddressRepository;
+import com.azubike.ellipsis.model.request.InQueryRequest;
+import com.azubike.ellipsis.model.request.StudentRequest;
+import com.azubike.ellipsis.model.response.ErrorMessages;
 import com.azubike.ellipsis.repository.StudentRepository;
-import com.azubike.ellipsis.request.InQueryRequest;
-import com.azubike.ellipsis.request.StudentRequest;
-import com.azubike.ellipsis.response.ErrorMessages;
 import com.azubike.ellipsis.service.StudentService;
 
 @Service
 public class StudentServiceImpl implements StudentService {
 	@Autowired
 	private StudentRepository repository;
-	@Autowired
-	private AddressRepository addressRepository;
 
 	@Override
 	public List<Student> getAllStudents(int page, int size) {
@@ -50,9 +49,19 @@ public class StudentServiceImpl implements StudentService {
 		address.setStreet(studentRequest.getStreet());
 		Student student = new ModelMapper().map(studentRequest, Student.class);
 		student.setAddress(address);
-		addressRepository.save(address);
-		Student returnedValue = repository.save(student);
-		return returnedValue;
+
+		List<Subject> subjects = studentRequest.getSubjects().stream().map(s -> {
+			Subject subject = new Subject();
+			subject.setMarksObtained(s.getMarksObtained());
+			subject.setSubjectName(s.getSubjectName());
+			subject.setStudent(student);
+			return subject;
+		}).collect(Collectors.toList());
+
+		student.setSubjects(subjects);
+		Student savedStudent = repository.save(student);
+
+		return savedStudent;
 	}
 
 	@Override
@@ -124,7 +133,6 @@ public class StudentServiceImpl implements StudentService {
 		for (int i = 0; i < addresses.size(); i++) {
 			students.get(i).setAddress(addresses.get(i));
 		}
-		addressRepository.saveAll(addresses);
 		List<Student> savedStudents = repository.saveAll(students);
 		return savedStudents;
 	}
@@ -141,7 +149,6 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public List<Student> findByCity(String city) {
 		return repository.findByAddressCity(city);
-
 	}
 
 }

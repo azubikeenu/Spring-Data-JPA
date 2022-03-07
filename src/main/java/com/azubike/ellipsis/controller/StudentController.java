@@ -25,14 +25,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.azubike.ellipsis.entity.Student;
 import com.azubike.ellipsis.exceptions.StudentServiceException;
-import com.azubike.ellipsis.request.InQueryRequest;
-import com.azubike.ellipsis.request.StudentRequest;
-import com.azubike.ellipsis.request.StudentsRequest;
-import com.azubike.ellipsis.response.ErrorMessages;
-import com.azubike.ellipsis.response.OperationStatusModel;
-import com.azubike.ellipsis.response.RequestOperationName;
-import com.azubike.ellipsis.response.RequestOperationStatus;
-import com.azubike.ellipsis.response.StudentResponse;
+import com.azubike.ellipsis.model.request.InQueryRequest;
+import com.azubike.ellipsis.model.request.StudentRequest;
+import com.azubike.ellipsis.model.request.StudentsRequest;
+import com.azubike.ellipsis.model.response.ErrorMessages;
+import com.azubike.ellipsis.model.response.OperationStatusModel;
+import com.azubike.ellipsis.model.response.RequestOperationName;
+import com.azubike.ellipsis.model.response.RequestOperationStatus;
+import com.azubike.ellipsis.model.response.StudentResponse;
 import com.azubike.ellipsis.service.StudentService;
 
 @RestController
@@ -150,6 +150,7 @@ public class StudentController {
 			}.getType();
 			returnedValue = new ModelMapper().map(students, listType);
 		}
+
 		return returnedValue;
 	}
 

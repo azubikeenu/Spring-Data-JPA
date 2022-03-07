@@ -1,4 +1,4 @@
-package com.azubike.ellipsis.response;
+package com.azubike.ellipsis.model.response;
 
 import java.util.Date;
 

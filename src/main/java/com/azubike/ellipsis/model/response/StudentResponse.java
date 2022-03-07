@@ -1,6 +1,7 @@
-package com.azubike.ellipsis.response;
+package com.azubike.ellipsis.model.response;
 
-import com.azubike.ellipsis.entity.Address;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -18,6 +19,7 @@ public class StudentResponse {
 	private String firstName;
 	private String lastName;
 	private String email;
-	private Address address;
+	private AddressResponse address;
+	private List<SubjectResponse> subjects;
 
 }

@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.azubike.ellipsis.entity.Student;
-import com.azubike.ellipsis.request.InQueryRequest;
-import com.azubike.ellipsis.request.StudentRequest;
+import com.azubike.ellipsis.model.request.InQueryRequest;
+import com.azubike.ellipsis.model.request.StudentRequest;
 
 public interface StudentService {
 	List<Student> getAllStudents(int page, int size);

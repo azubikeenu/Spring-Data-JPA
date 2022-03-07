@@ -1,13 +1,13 @@
-package com.azubike.ellipsis.request;
+package com.azubike.ellipsis.model.request;
+
+import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 @Getter
 @Setter
 public class StudentRequest {
@@ -19,5 +19,6 @@ public class StudentRequest {
 	private String email;
 	private String street;
 	private String city;
+	private List<SubjectRequest> subjects;
 
 }

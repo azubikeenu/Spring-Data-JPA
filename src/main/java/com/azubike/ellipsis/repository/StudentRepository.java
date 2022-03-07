@@ -38,6 +38,9 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 	int updateStudentFirstName(String firstName, long id);
 
 	/// ---------------Relationships--------------------///////////
-
 	List<Student> findByAddressCity(String city);
+
+	@Query("from Student s INNER JOIN Address a ON s.address = a WHERE a.city = :city")
+	List<Student> findByCity(@Param("city") String city);
+
 }
